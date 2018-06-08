@@ -6,20 +6,27 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PostListComponent } from './post-list/post-list.component';
+import { UserComponent } from './user/user.component';
+import { HttpClientModule } from '@angular/common/http';
+import { UserService } from './user/user.service';
+import { PostService } from './post-list/post.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    PostListComponent
+    PostListComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
   ],
-  providers: [],
+  providers: [UserService,PostService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,18 +8,25 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="">Home <span class="sr-only">(current)</span></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="">Logout<span class="sr-only">(current)</span></a>
+      </li>
     </ul>
   </div>
 </nav>
 <div class="container-fluid">
   <div class="row">
-      <div class="col-md">
-        <div class="card" style="width: 18rem;" >
-          <img class="card-img-top" src="https://vignette.wikia.nocookie.net/mint524/images/d/d7/Sky.jpg/revision/latest?cb=20160706152654" alt="Card image cap">
+      <div class="col-auto" *ngFor="let post of posts">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="data:image/png;base64,{{post.photo}}" alt="Card image cap">
           <div class="card-body">
-           <h5 class="card-title">Card title</h5> 
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+           <h5 class="card-title">{{post.title}}</h5> 
+           <hr>
+            <p class="card-text"><a href="#">{{post.user.username}}</a></p>
+            <p class="card-text">{{post.date |date: 'dd.MM.yyyy'}}</p>
+            <hr>
+            <p class="card-text">{{post.description}}</p>
+            <a href="#" class="btn btn-primary">Read more</a>
           </div>
         </div>
       </div>

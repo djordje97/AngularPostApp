@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PostService } from './post.service';
+import { Post } from '../model/post.model';
 
 @Component({
   selector: 'app-post-list',
@@ -7,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostListComponent implements OnInit {
 
-  constructor() { }
+  posts:Post[];
+  constructor(private router:Router,private postService:PostService) { }
 
   ngOnInit() {
-  }
+    this.postService.getAllPosts()
+    .subscribe(data =>{
+      this.posts=data;
+    });
+  };
 
 }
