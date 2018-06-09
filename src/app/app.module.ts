@@ -10,6 +10,7 @@ import { UserComponent } from './user/user.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './user/user.service';
 import { PostService } from './post-list/post.service';
+import { SinglePostComponent } from './single-post/single-post.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { PostService } from './post-list/post.service';
     LoginComponent,
     RegisterComponent,
     PostListComponent,
-    UserComponent
+    UserComponent,
+    SinglePostComponent
   ],
   imports: [
     BrowserModule,

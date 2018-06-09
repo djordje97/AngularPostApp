@@ -15,7 +15,7 @@
   </div>
 </nav>
 <div class="container-fluid">
-  <div class="row">
+  <div class="row" style="margin-top: 3%;">
       <div class="col-auto" *ngFor="let post of posts">
         <div class="card" style="width: 18rem;">
           <img class="card-img-top" src="data:image/png;base64,{{post.photo}}" alt="Card image cap">
@@ -26,7 +26,7 @@
             <p class="card-text">{{post.date |date: 'dd.MM.yyyy'}}</p>
             <hr>
             <p class="card-text">{{post.description}}</p>
-            <a href="#" class="btn btn-primary">Read more</a>
+            <a class="btn btn-primary" [routerLink]="['/posts',post.id]">Read more</a>
           </div>
         </div>
       </div>

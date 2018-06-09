@@ -13,11 +13,13 @@ export class PostListComponent implements OnInit {
   posts:Post[];
   constructor(private router:Router,private postService:PostService) { }
 
+
   ngOnInit() {
     this.postService.getAllPosts()
     .subscribe(data =>{
       this.posts=data;
     });
   };
+
 
 }
