@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" routerLink="">Post portal</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,8 +49,8 @@
           <!-- Post Content -->
           <p class="lead">{{post.description}}</p>
           <hr>
-          <button type="button" class="btn btn-primary" (click)="liked()">Like&nbsp;{{post.likes}}</button>
-          <button type="button" class="btn btn-danger" (click)="disliked()"style="margin-left: 10px;">Dislike&nbsp;{{post.dislike}}</button>
+          <button type="button" class="btn btn-primary"  (click)="likePost()"><i class="fa fa-thumbs-up icon"></i>&nbsp;{{post.likes}}</button>
+          <button type="button" class="btn btn-danger" (click)="dislikePost()"style="margin-left: 10px;"><i class="fa fa-thumbs-down icon"></i>&nbsp;{{post.dislike}}</button>
 
           <!-- Comments Form -->
           <div class="card my-4">
@@ -65,10 +66,39 @@
           </div>
 
           <!-- Single Comment -->
-          <div class="media mb-4">
+          <!-- <div class="media mb-4" *ngFor="let comment of comments">
             <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
             <div class="media-body">
-              <h5 class="mt-0">Commenter Name</h5>
-              Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-            </div>
+              <h5 class="mt-0">{{comment.title}}</h5>
+              {{comment.description}}
+            </div> -->
+
+            <div class="row" *ngFor="let comment of comments">
+              <div class="col-sm-8">
+                  <div class="panel panel-white post panel-shadow">
+                      <div class="post-heading">
+                          <div class="pull-left image">
+                              <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
+                          </div>
+                          <div class="pull-left meta">
+                              <div class="title h5">
+                                  <a href="#"><b>{{comment.user.username}}</b></a>
+                                  made a comment.
+                              </div>
+                              <h6 class="text-muted time">{{comment.date |date: 'dd.MM.yyyy'}}</h6>
+                          </div>
+                      </div> 
+                      <div class="post-description"> 
+                          <p>{{comment.description}}</p>
+                          <div class="stats">
+                              <button name="{{comment.id}}" id="false" (click)="likeComment($event)" class="btn btn-primary">
+                                  <i class="fa fa-thumbs-up icon"></i>&nbsp;{{comment.likes}}
+                              </button>
+                              <button class="btn btn-danger" name="{{comment.id}}" (click)="dislikeComment($event)" id="false" style="margin-left: 4px;">
+                                  <i class="fa fa-thumbs-down icon"></i>&nbsp;{{comment.dislikes}}
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 </div>
