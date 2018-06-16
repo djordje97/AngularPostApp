@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../model/user.model';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
+import { AuthService } from '../authservice';
 
 @Component({
   selector: 'app-login',
@@ -20,16 +21,13 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    this.userService.getUserByUsername(this.username)
-    .subscribe(data => { 
+  
+   this.userService.login(this.username,this.password).subscribe(data => { 
       console.log(data);
       this.userJson=data;
-      if (this.userJson.username === this.username && this.password === this.userJson.password){
-      
-        this.router.navigate(['/posts']);
-      }
+      AuthService.setJwtToken(data.access_token);
     });
-   
+    this.router.navigate(['/posts']);
   }
 
 }

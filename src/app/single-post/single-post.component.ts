@@ -5,6 +5,7 @@ import { Post } from '../model/post.model';
 import { Comment } from '../model/comment.model';
 import { Element } from '@angular/compiler';
 import { element } from 'protractor';
+import { AuthService } from '../authservice';
 
 @Component({
   selector: 'app-single-post',
@@ -153,6 +154,11 @@ export class SinglePostComponent implements OnInit {
       comment.dislikes--;
       target.attributes.id.nodeValue="false";
     }
+  }
+
+  logout(){
+    AuthService.removeJwtToken();
+    this.router.navigate["/login"]
   }
   
 }

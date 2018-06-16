@@ -4,13 +4,15 @@ import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
 import { PostListComponent } from "./post-list/post-list.component";
 import { SinglePostComponent } from "./single-post/single-post.component";
+import { UserComponent } from "./user/user.component";
 
 const appRoutes: Routes=[
     {path: '', redirectTo: '/login' ,pathMatch: 'full'},
     {path: 'login' ,component: LoginComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'posts', component: PostListComponent},
-    {path: 'posts/:id',component: SinglePostComponent}
+    {path: 'posts/:id',component: SinglePostComponent},
+    {path: 'users/:username',component: UserComponent}
 ];
 @NgModule({
 imports: [RouterModule.forRoot(appRoutes)],
