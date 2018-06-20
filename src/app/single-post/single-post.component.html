@@ -31,7 +31,7 @@
           <!-- Author -->
           <p class="lead">
             by
-            <a href="#">{{post.user.username}}</a>
+            <a href="#" [routerLink]="['/users',post.user.username]">{{post.user.username}}</a>
           </p>
 
           <hr>
@@ -42,7 +42,7 @@
           <hr>
 
           <!-- Preview Image -->
-          <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
+          <img class="img-fluid rounded" src="https://images.pexels.com/photos/912110/pexels-photo-912110.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="">
 
           <hr>
 
@@ -56,25 +56,22 @@
           <div class="card my-4">
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
-              <form>
+              <form name="commentForm"   #f="ngForm"> 
+                  <div class="form-group">
+                    <p>Comment title:</p>
+                      <input type="text" id="title" name="title" [(ngModel)]="newComment.titleC" class="form-control" required>
+                    </div>
                 <div class="form-group">
-                  <textarea class="form-control" rows="3"></textarea>
+                    <p>Comment description:</p>
+                  <textarea class="form-control"  id="description" name="description" required [(ngModel)]="newComment.descriptionC" rows="3"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" [disabled]="!f.valid" (click)="createComment()" class="btn btn-primary">Submit</button>
               </form>
             </div>
           </div>
 
-          <!-- Single Comment -->
-          <!-- <div class="media mb-4" *ngFor="let comment of comments">
-            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-            <div class="media-body">
-              <h5 class="mt-0">{{comment.title}}</h5>
-              {{comment.description}}
-            </div> -->
-
-            <div class="row" *ngFor="let comment of comments">
-              <div class="col-sm-8">
+            <div class="row" *ngFor="let comment of comments" >
+              <div class="col-sm-8" style="margin: 3%;">
                   <div class="panel panel-white post panel-shadow">
                       <div class="post-heading">
                           <div class="pull-left image">
@@ -82,7 +79,7 @@
                           </div>
                           <div class="pull-left meta">
                               <div class="title h5">
-                                  <a href="#"><b>{{comment.user.username}}</b></a>
+                                  <a href="#" [routerLink]="['/users',comment.user.username]"><b>{{comment.user.username}}</b></a>
                                   made a comment.
                               </div>
                               <h6 class="text-muted time">{{comment.date |date: 'dd.MM.yyyy'}}</h6>

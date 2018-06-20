@@ -20,10 +20,15 @@ export class PostListComponent implements OnInit {
 
 
   ngOnInit() {
-    this.userService.getLogged().subscribe(
+    var token=localStorage.getItem("token");
+    console.log("Token u init "+token)
+    this.userService.getLogged(token).subscribe(
       data =>{
         console.log(data);
           this.logged=data;
+       this.userService.getRole(data.username).subscribe(result =>{
+            console.log(result);
+          });
       });
     this.postService.getAllPosts()
     .subscribe(data =>{
@@ -32,8 +37,7 @@ export class PostListComponent implements OnInit {
   };
 
   logout(){
-
-    AuthService.removeJwtToken();
+    localStorage.removeItem("token");
     this.router.navigate["/login"]
   }
  

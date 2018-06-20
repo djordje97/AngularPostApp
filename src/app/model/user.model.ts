@@ -1,46 +1,46 @@
 export class User{
-    public _id: number;
-    public _name: string;
-    public _username: string;
-    public _password: string;
-    public _photo: Blob;
+    public id: number;
+    public name: string;
+    public username: string;
+    public password: string;
+    public photo: Blob;
 
     constructor(){
     
     }
 
-    get id():number{
-        return this._id;
+    get idU():number{
+        return this.id;
     }
-    set id(theId: number){
-        this._id=theId;
-    }
-
-    get name():string{
-        return this._name;
-    }
-    set name(theName: string){
-        this._name=theName;
+    set idU(theId: number){
+        this.id=theId;
     }
 
-    get username():string{
-        return this._username;
+    get nameU():string{
+        return this.name;
     }
-    set username(theUsername: string){
-        this._username=theUsername;
-    }
-
-    get password():string{
-        return this._password;
-    }
-    set password(thepassword: string){
-        this._password=thepassword;
+    set nameU(theName: string){
+        this.name=theName;
     }
 
-    get photo():Blob{
-        return this._photo;
+    get usernameU():string{
+        return this.username;
     }
-    set photo(thePhoto: Blob){
-        this._photo=thePhoto;
+    set usernameU(theUsername: string){
+        this.username=theUsername;
+    }
+
+    get passwordU():string{
+        return this.password;
+    }
+    set passwordU(thepassword: string){
+        this.password=thepassword;
+    }
+
+    get photoU():Blob{
+        return this.photo;
+    }
+    set photoU(thePhoto: Blob){
+        this.photo=thePhoto;
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PostService } from '../post-list/post.service';
 import { Post } from '../model/post.model';
@@ -6,6 +6,9 @@ import { Comment } from '../model/comment.model';
 import { Element } from '@angular/compiler';
 import { element } from 'protractor';
 import { AuthService } from '../authservice';
+import { User } from '../model/user.model';
+import { UserService } from '../user/user.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-single-post',
@@ -22,7 +25,12 @@ export class SinglePostComponent implements OnInit {
   likedComment: boolean;
   dislikedComment: boolean;
   commentId: number;
-  constructor(private router: Router,private route: ActivatedRoute,private postService: PostService) { }
+  newComment:Comment=new Comment();
+  logged:User;
+  role;
+
+  @ViewChild('f')form:NgForm;
+  constructor(private router: Router,private route: ActivatedRoute,private postService: PostService,private userService:UserService) { }
 
   ngOnInit() {
       this.route.params.subscribe(params =>{
@@ -39,6 +47,18 @@ export class SinglePostComponent implements OnInit {
       .subscribe( data =>{
         this.comments=data;
       });
+
+      var token=localStorage.getItem("token");
+      console.log("Token u init "+token)
+      this.userService.getLogged(token).subscribe(
+        data =>{
+          console.log(data);
+            this.logged=data;
+         this.userService.getRole(data.username).subscribe(result =>{
+              console.log(result);
+              this.role=result;
+            });
+        });
   }
 
   likePost(){
@@ -57,6 +77,10 @@ export class SinglePostComponent implements OnInit {
       this.post.likes--;
       this.likedPost=false;
     }
+
+    this.postService.updatePost(this.post.id,this.post).subscribe(data =>{
+      console.log(data);
+    });
     
   }
 
@@ -76,6 +100,9 @@ export class SinglePostComponent implements OnInit {
       this.post.dislike--;
       this.dislikedPost=false;
     }
+    this.postService.updatePost(this.post.id,this.post).subscribe(data =>{
+      console.log(data);
+    });
   }
 
   likeComment(event){
@@ -114,6 +141,10 @@ export class SinglePostComponent implements OnInit {
       comment.likes--;
       target.attributes.id.nodeValue="false";
     }
+
+    this.postService.updateComment(comment.id,comment).subscribe(data =>{
+      console.log(data);
+    });
   
   }
   
@@ -154,11 +185,28 @@ export class SinglePostComponent implements OnInit {
       comment.dislikes--;
       target.attributes.id.nodeValue="false";
     }
+    this.postService.updateComment(comment.id,comment).subscribe(data =>{
+      console.log(data);
+    });
   }
 
   logout(){
-    AuthService.removeJwtToken();
+    localStorage.removeItem("token");
     this.router.navigate["/login"]
+  }
+  createComment(){
+
+    this.newComment.userC=this.logged;
+    this.newComment.postC=this.post;
+    this.newComment.likesC=0;
+    this.newComment.dislikesC=0;
+    console.log(this.newComment);
+    this.postService.createComment(this.newComment).subscribe(data =>{
+      this.comments.push(data);
+      
+      console.log(data);
+      this.form.reset();
+    });
   }
   
 }

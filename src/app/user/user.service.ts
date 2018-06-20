@@ -3,9 +3,9 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { User } from "../model/user.model";
 import { AuthService } from "../authservice";
 
-var headerInfo=AuthService.createAuthorizationTokenHeader();
+
 const httpOptions= {
-    header: new  HttpHeaders(AuthService.createAuthorizationTokenHeader())
+    header: new  HttpHeaders()
 };
 @Injectable()
 export class UserService{
@@ -14,14 +14,135 @@ export class UserService{
     constructor(private http: HttpClient){}
 
      getUserByUsername(username: string): any{
+        var token=localStorage.getItem("token");
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
         return this.http.get<User>(this.url+'/get/'+username,{headers:httpOptions.header});
     }
 
     login(username,password):any{
+        var token=localStorage.getItem("token");
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
         return this.http.post("api/auth/login",{'username':username,'password':password},{headers:httpOptions.header});
     }
 
-    getLogged():any{
+    getLogged(token):any{
+        console.log("Iz loged service "+token);
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
         return this.http.get("api/users/logged",{headers:httpOptions.header});
+    }
+
+    getAllUsername():any{
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.get("api/users/allUsername",{headers:httpOptions.header});
+    }
+
+    addUser(user:User):any{
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.post("api/users",user,{headers:httpOptions.header});
+    }
+
+    setRole(username:string,role:string):any{
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.put("api/users/role/"+username+"/"+role,{headers:httpOptions.header});
+    }
+
+    getRole(username:string):any{
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.get("api/users/get/role/"+username,{headers:httpOptions.header});
     }
 }

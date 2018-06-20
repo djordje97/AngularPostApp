@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../model/user.model';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
-import { AuthService } from '../authservice';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +16,15 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router,private userService: UserService) { }
 
   ngOnInit() {
-   
+    var token=localStorage.getItem("token");
+    this.userService.getLogged(token).subscribe(
+      data =>{
+        console.log(data);
+          if(data != null){
+            this.router.navigate(['/posts']);
+          }
+      });
+    
   }
 
   login(){
@@ -25,9 +32,10 @@ export class LoginComponent implements OnInit {
    this.userService.login(this.username,this.password).subscribe(data => { 
       console.log(data);
       this.userJson=data;
-      AuthService.setJwtToken(data.access_token);
+      localStorage.setItem("token",data.access_token);
+      this.router.navigate(['/posts']);
     });
-    this.router.navigate(['/posts']);
+   
   }
 
 }

@@ -15,25 +15,27 @@
   <div class="row">
       <div class="col-md"></div>
       <div class="col-md-6">
-              <form>
+              <form name="userForm"   #f="ngForm">
                   <div class="form-group">
                       <label for="name">Name</label>
-                      <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter name">
+                      <input type="text" class="form-control" id="name"  required [(ngModel)]="newUser.nameU" name="name" aria-describedby="emailHelp" placeholder="Enter name">
                     </div>
                       <div class="form-group">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter username">
+                        <input type="text" (focus)="onFocus()"  class="form-control" id="usernameU" required [(ngModel)]="newUser.username" name="username" aria-describedby="emailHelp" placeholder="Enter username">
                       </div>
                       <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Create password">
+                        <input type="password" class="form-control" id="password" required [(ngModel)]="newUser.passwordU" name="password" placeholder="Create password">
                       </div>
                       <div class="form-group">
                           <label for="photo">Input your photo</label>
-                          <input type="file" class="form-control-file" id="photo">
+                          <input type="file" class="form-control-file" id="photo"[(ngModel)]="newUser.photoU" name="photo">
                         </div>
-                      <button type="submit" class="btn btn-success">Submit</button>
-                      <button type="submit" class="btn btn-danger" style="margin-left: 5px;">Cancel</button>
+                        <p class="alert alert-danger" role="alert" *ngIf="showMessage==true">Username already exist!</p>
+                        <p class="alert alert-success" role="alert" *ngIf="success==true">Registered successiful.You can log in now.</p>
+                      <button type="submit"   (click)="createUser()" class="btn btn-success" [disabled]="!f.valid">Submit</button>
+                      <button type="submit" (click)="cancel()" class="btn btn-danger" style="margin-left: 5px;">Cancel</button>
                     </form>
       </div>
       <div class="col-md"></div>

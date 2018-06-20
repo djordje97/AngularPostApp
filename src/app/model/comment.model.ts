@@ -2,72 +2,72 @@ import { User } from "./user.model";
 import { Post } from "./post.model";
 
 export class Comment{
-    public _id: number;
-    public _title: string;
-    public _description: string;
-    public _date:Date;
-    public _likes: number;
-    public _dislikes: number;
-    public _user:User;
-    public _post: Post;
+    public id: number;
+    public title: string;
+    public description: string;
+    public date:Date;
+    public likes: number;
+    public dislikes: number;
+    public user:User;
+    public post: Post;
 
     constructor(){
     }
 
     
-    get id() : number {
-        return this._id;
+    get idC() : number {
+        return this.id;
     }
-    set id(theId : number) {
-        this._id= theId;
-    }
-
-    get title() : string {
-        return this._title;
-    }
-    set title(theTitle : string) {
-        this._title= theTitle;
+    set idC(theId : number) {
+        this.id= theId;
     }
 
-    get description() : string {
-        return this._description;
+    get titleC() : string {
+        return this.title;
     }
-    set description(theDescription : string) {
-        this._description= theDescription;
+    set titleC(theTitle : string) {
+        this.title= theTitle;
     }
 
-    get date() : Date {
-        return this._date;
+    get descriptionC() : string {
+        return this.description;
     }
-    set date(theDate : Date) {
-        this._date= theDate;
+    set descriptionC(theDescription : string) {
+        this.description= theDescription;
+    }
+
+    get dateC() : Date {
+        return this.date;
+    }
+    set dateC(theDate : Date) {
+        this.date= theDate;
     }
     
-    get likes() : number {
-        return this._likes;
+    get likesC() : number {
+        return this.likes;
     }
-    set likes(theLikes : number) {
-        this._likes= theLikes;
+    set likesC(theLikes : number) {
+        this.likes= theLikes;
     }
     
-    get dislikes() : number {
-        return this._dislikes;
+    get dislikesC() : number {
+        return this.dislikes;
     }
-    set dislikes(theDislikes : number) {
-        this._likes= theDislikes;
-    }
-
-    get user() : User {
-        return this._user;
-    }
-    set user(theUser : User) {
-        this._user= theUser;
+    set dislikesC(theDislikes : number) {
+        this.dislikes= theDislikes;
     }
 
-    get post() : Post {
-        return this._post;
+    get userC() : User {
+        return this.user;
     }
-    set post(thePost : Post) {
-        this._post= thePost;
+    set userC(theUser : User) {
+        this.user= theUser;
+    }
+
+    get postC() : Post {
+        return this.post;
+    }
+    set postC(thePost : Post) {
+        this.post= thePost;
     }
 }

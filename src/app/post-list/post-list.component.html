@@ -21,11 +21,11 @@
   <div class="row" style="margin-top: 3%;">
       <div class="col-auto" *ngFor="let post of posts">
         <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="data:image/png;base64,{{post.photo}}" alt="Card image cap">
+          <img class="card-img-top" src="https://images.pexels.com/photos/912110/pexels-photo-912110.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Card image cap">
           <div class="card-body">
            <h5 class="card-title">{{post.title}}</h5> 
            <hr>
-            <p class="card-text"><a href="#">{{post.user.username}}</a></p>
+            <p class="card-text"><a href="#" [routerLink]="['/users',post.user.username]">{{post.user.username}}</a></p>
             <p class="card-text">{{post.date |date: 'dd.MM.yyyy'}}</p>
             <hr>
             <p class="card-text">{{post.description}}</p>
