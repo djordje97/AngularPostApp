@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './user.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { User } from '../model/user.model';
+import { NONAME } from 'dns';
 
 @Component({
   selector: 'app-user',
@@ -12,6 +14,13 @@ export class UserComponent implements OnInit {
   pageOwner;
   logged;
   role;
+  newUser;
+  display=false;
+  editMode=false;
+  createMode=true;
+  passwordChanger={
+
+  };
   constructor(private userService:UserService,private router:Router,private route:ActivatedRoute) { }
 
   ngOnInit() {
@@ -35,6 +44,32 @@ export class UserComponent implements OnInit {
         });
   }
 
+  openAdd(){
+    this.newUser={
+
+    };
+    this.editMode=false
+    this.createMode=true;
+    this.display=true;
+
+  }
+  cancel(){
+    this.display=false;
+    if(this.editMode == true){
+      this.editMode=false;
+    }
+    if(this.createMode == true){
+      this.createMode=false;
+    }
+    
+    this.newUser=null;
+  }
+  openEdit(){
+    this.createMode=false;
+    this.editMode=true;
+    this.display=true;
+    this.newUser=this.pageOwner;
+  }
   logout(){
     localStorage.removeItem("token");
     this.router.navigate["/login"]
