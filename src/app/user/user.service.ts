@@ -145,4 +145,83 @@ export class UserService{
         };
         return this.http.get("api/users/get/role/"+username,{headers:httpOptions.header});
     }
+
+    updateUser(id:number,user:any){
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.put("api/users/"+id,user,{headers:httpOptions.header});
+    }
+    passwordUpdate(changerPassword:any){
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.post("api/auth/change-password",changerPassword,{headers:httpOptions.header});
+    }
+
+    deleteUser(id:number){
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.delete("api/users/"+id,{headers:httpOptions.header});
+    }
+
+    postFile(fileToUpload: File){
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        const endpoint = 'your-destination-url';
+        const formData: FormData = new FormData();
+        formData.append('fileKey', fileToUpload, fileToUpload.name);
+        return this.http
+          .post(endpoint, formData, { headers: httpOptions.header });
+    }
 }

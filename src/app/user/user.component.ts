@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from './user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../model/user.model';
 import { NONAME } from 'dns';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-user',
@@ -18,6 +19,13 @@ export class UserComponent implements OnInit {
   display=false;
   editMode=false;
   createMode=true;
+  success=false;
+  usernames:string[];
+  showMessage=false;
+  adminRole="ROLE_ADMIN";
+  editedUser;
+  fileToUpload: File = null;
+  @ViewChild('f')form:NgForm;
   passwordChanger={
 
   };
@@ -27,7 +35,9 @@ export class UserComponent implements OnInit {
     this.route.params.subscribe(params =>{
       this.usernameParam=params['username'];
     });
-
+    this.userService.getAllUsername().subscribe(data =>{
+      this.usernames=data;
+    });
     this.userService.getUserByUsername(this.usernameParam).subscribe(data =>{
         this.pageOwner=data;
     });
@@ -39,9 +49,12 @@ export class UserComponent implements OnInit {
             this.logged=data;
          this.userService.getRole(data.username).subscribe(result =>{
               console.log(result);
+              console.log(this.logged);
+              console.log(this.pageOwner);
               this.role=result;
             });
         });
+
   }
 
   openAdd(){
@@ -74,4 +87,52 @@ export class UserComponent implements OnInit {
     localStorage.removeItem("token");
     this.router.navigate["/login"]
   }
+  onFocus(){
+    this.showMessage=false;
+  }
+
+  save(){
+    if(this.createMode){
+      if(this.usernames.find(x => x === this.newUser.username)){
+        this.showMessage=true;
+        return;
+      }
+        this.userService.addUser(this.newUser).subscribe(data =>{
+          this.success=true;
+          this.userService.setRole(data.username,"ROLE_USER").subscribe(result =>{
+            if(result){
+              this.success=true;
+              this.form.reset();
+              this.createMode=false;
+              this.editMode=false;
+            }
+          });
+        });
+    }else{
+      this.userService.updateUser(this.pageOwner.id,this.newUser).subscribe(data =>{
+
+        this.userService.passwordUpdate(this.passwordChanger).subscribe(result =>{
+      
+        });
+        console.log(data);
+        this.success=true;
+        this.form.reset();
+        this.editMode=false;
+        this.editedUser=data;
+        this.pageOwner.name = this.editedUser.name;
+        this.pageOwner.username=this.editedUser.username; 
+        this.display=false;
+      });
+    }
+    
+  }
+  deleteUser(){
+    this.userService.deleteUser(this.pageOwner.id).subscribe(data =>{
+      this.router.navigate(['/posts']);
+    });
+  }
+
+  handleFileInput(files: FileList) {
+    this.fileToUpload = files.item(0);
+}
 }

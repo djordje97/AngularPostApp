@@ -36,7 +36,7 @@
                             <label for="name">Name</label>
                             <input type="text" class="form-control" id="name"  required [(ngModel)]="newUser.name" name="name" aria-describedby="emailHelp" placeholder="Enter name">
                           </div>
-                            <div class="form-group">
+                            <div class="form-group" [hidden]="!createMode">
                               <label for="username">Username</label>
                               <input type="text" (focus)="onFocus()"  class="form-control" id="usernameU" required [(ngModel)]="newUser.username" name="username" aria-describedby="emailHelp" placeholder="Enter username">
                             </div>
@@ -54,19 +54,20 @@
                             </div>
                             <div class="form-group">
                                 <label for="photo">Input your photo</label>
-                                <input type="file" class="form-control-file" id="photo"[(ngModel)]="newUser.photoU" name="photo">
+                                <input type="file" class="form-control-file" id="photo"  name="photo">
                               </div>
                               <p class="alert alert-danger" role="alert" *ngIf="showMessage==true">Username already exist!</p>
-                              <p class="alert alert-success" role="alert" *ngIf="success==true">Registered successiful.You can log in now.</p>
-                            <button type="submit"   (click)="createUser()" class="btn btn-success" [disabled]="!f.valid">Submit</button>
+                              <p class="alert alert-success" role="alert" *ngIf="success==true">Success!</p>
+                            <button type="submit"   (click)="save()" class="btn btn-success" [disabled]="!f.valid">Submit</button>
                             <button type="submit" (click)="cancel()" class="btn btn-danger" style="margin-left: 5px;">Cancel</button>
                           </form>
             </div>
     </div>
     <div class="row">
       <div class="col-md" style="margin: 4%;">
-        <button type="submit"   (click)="openAdd()" class="btn btn-success">Add</button>
-        <button type="submit" (click)="openEdit()" class="btn btn-warning" style="margin-left: 5px;">Edit</button>
+        <button type="submit"   (click)="openAdd()" class="btn btn-success" *ngIf="role.authority === adminRole">Add</button>
+        <button type="submit" (click)="openEdit()" class="btn btn-warning" *ngIf="logged.username === pageOwner.username || role.authority === adminRole" style="margin-left: 5px;">Edit</button>
+        <button type="submit"  class="btn btn-danger" (click)="deleteUser()" *ngIf="role.authority === adminRole" style="margin-left: 5px;">Delete</button>
       </div>
       
     </div>

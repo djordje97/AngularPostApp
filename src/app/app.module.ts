@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './user/user.service';
 import { PostService } from './post-list/post.service';
 import { SinglePostComponent } from './single-post/single-post.component';
+import {MatDialogModule,MatCardModule,MatButtonModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,9 @@ import { SinglePostComponent } from './single-post/single-post.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    MatDialogModule,
+    MatCardModule,
+    MatButtonModule
   ],
   providers: [UserService,PostService],
   bootstrap: [AppComponent]
