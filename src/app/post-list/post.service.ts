@@ -93,4 +93,120 @@ export class PostService{
         };
         return this.http.post<Comment>('/api/comments/',comment,{headers:httpOptions.header});
     }
+
+    deletePost(postId:number){
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.delete("/api/posts/"+postId,{headers:httpOptions.header});
+    }
+
+  
+
+    addPost(post:any):any{
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.post("/api/posts",post,{headers:httpOptions.header});
+    }
+
+    getAllTags():any{
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.get("/api/tags",{headers:httpOptions.header});
+    }
+
+    addTag(tag:any):any{
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.post("/api/tags",tag,{headers:httpOptions.header});
+    }
+
+    addTagInPost(postId:any,tagId:any):any{
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.post("/api/tags/add/"+postId+"/"+tagId,{headers:httpOptions.header});
+    }
+
+    getTagsByPost(postId:number):any{
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.get("/api/posts/tag/"+postId,{headers:httpOptions.header});
+    }
 }

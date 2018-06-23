@@ -12,6 +12,7 @@ import { UserService } from './user/user.service';
 import { PostService } from './post-list/post.service';
 import { SinglePostComponent } from './single-post/single-post.component';
 import {MatDialogModule,MatCardModule,MatButtonModule} from '@angular/material';
+import { AddEditPostComponent } from './add-edit-post/add-edit-post.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {MatDialogModule,MatCardModule,MatButtonModule} from '@angular/material';
     RegisterComponent,
     PostListComponent,
     UserComponent,
-    SinglePostComponent
+    SinglePostComponent,
+    AddEditPostComponent
   ],
   imports: [
     BrowserModule,

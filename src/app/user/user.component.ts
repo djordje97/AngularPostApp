@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../model/user.model';
 import { NONAME } from 'dns';
 import { NgForm } from '@angular/forms';
+import {} from "jquery";
 
 @Component({
   selector: 'app-user',
@@ -15,6 +16,7 @@ export class UserComponent implements OnInit {
   pageOwner;
   logged;
   role;
+  pageOwnerRole;
   newUser;
   display=false;
   editMode=false;
@@ -24,7 +26,7 @@ export class UserComponent implements OnInit {
   showMessage=false;
   adminRole="ROLE_ADMIN";
   editedUser;
-  fileToUpload: File = null;
+  adminSelected=false;
   @ViewChild('f')form:NgForm;
   passwordChanger={
 
@@ -40,6 +42,10 @@ export class UserComponent implements OnInit {
     });
     this.userService.getUserByUsername(this.usernameParam).subscribe(data =>{
         this.pageOwner=data;
+        this.userService.getRole(data.username).subscribe(result =>{
+          console.log("pageOwner: "+result.authority);
+          this.pageOwnerRole=result.authority;
+        });
     });
     var token=localStorage.getItem("token");
       console.log("Token u init "+token)
@@ -54,6 +60,7 @@ export class UserComponent implements OnInit {
               this.role=result;
             });
         });
+        
 
   }
 
@@ -82,6 +89,9 @@ export class UserComponent implements OnInit {
     this.editMode=true;
     this.display=true;
     this.newUser=this.pageOwner;
+    if(this.pageOwnerRole === "ROLE_ADMIN"){
+      this.adminSelected=true;
+    }
   }
   logout(){
     localStorage.removeItem("token");
@@ -99,7 +109,11 @@ export class UserComponent implements OnInit {
       }
         this.userService.addUser(this.newUser).subscribe(data =>{
           this.success=true;
-          this.userService.setRole(data.username,"ROLE_USER").subscribe(result =>{
+          var sendRole="ROLE_USER";
+          if(this.adminSelected == true){
+            sendRole="ROLE_ADMIN";
+          }
+          this.userService.setRole(data.username,sendRole).subscribe(result =>{
             if(result){
               this.success=true;
               this.form.reset();
@@ -109,7 +123,17 @@ export class UserComponent implements OnInit {
           });
         });
     }else{
+      console.log(this.adminSelected);
       this.userService.updateUser(this.pageOwner.id,this.newUser).subscribe(data =>{
+        if(this.adminSelected == true){
+          this.userService.setRole(this.pageOwner.username,"ROLE_ADMIN").subscribe(result =>{
+
+          });
+        }else{
+          this.userService.setRole(this.pageOwner.username,"ROLE_USER").subscribe(result =>{
+
+          });
+        }
 
         this.userService.passwordUpdate(this.passwordChanger).subscribe(result =>{
       
@@ -124,15 +148,18 @@ export class UserComponent implements OnInit {
         this.display=false;
       });
     }
+    location.reload();
     
   }
   deleteUser(){
-    this.userService.deleteUser(this.pageOwner.id).subscribe(data =>{
-      this.router.navigate(['/posts']);
-    });
+    var x=confirm("Are you shure?");
+    if(x){
+      this.userService.deleteUser(this.pageOwner.id).subscribe(data =>{
+        this.router.navigate(['/posts']);
+      });
+    }
+   
   }
 
-  handleFileInput(files: FileList) {
-    this.fileToUpload = files.item(0);
-}
+ 
 }

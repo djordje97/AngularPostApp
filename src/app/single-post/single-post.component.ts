@@ -9,6 +9,7 @@ import { AuthService } from '../authservice';
 import { User } from '../model/user.model';
 import { UserService } from '../user/user.service';
 import { NgForm } from '@angular/forms';
+import { Tag } from '../model/tag.model';
 
 @Component({
   selector: 'app-single-post',
@@ -28,6 +29,8 @@ export class SinglePostComponent implements OnInit {
   newComment:Comment=new Comment();
   logged:User;
   role;
+  tags:Tag[];
+  showTags:string="";
 
   @ViewChild('f')form:NgForm;
   constructor(private router: Router,private route: ActivatedRoute,private postService: PostService,private userService:UserService) { }
@@ -59,9 +62,22 @@ export class SinglePostComponent implements OnInit {
               this.role=result;
             });
         });
+
+        this.postService.getTagsByPost(this.postId).subscribe(data =>{
+          console.log(data);
+          this.tags=data;
+          console.log("Tags 1: "+this.tags);
+          for(var i=0;i<this.tags.length;i++){
+           this.showTags+="#"+this.tags[i].name+" ";
+          }
+        });
+
+     
+
   }
 
   likePost(){
+    alert(this.showTags);
     if(this.likedPost == false){
       if(this.dislikedPost == false){
         this.post.likes++;
@@ -207,6 +223,23 @@ export class SinglePostComponent implements OnInit {
       console.log(data);
       this.form.reset();
     });
+  }
+
+  editPost(){
+    this.router.navigate(['/add-edit',this.postId]);
+  }
+
+  openAdd(){
+    this.router.navigate(['/add-edit']);
+  }
+  
+  deletePost(){
+   var x=confirm("Are you shure?");
+    if(x){
+      this.postService.deletePost(this.postId).subscribe(data =>{
+          this.router.navigate(["/posts"]);
+      });
+    }
   }
   
 }

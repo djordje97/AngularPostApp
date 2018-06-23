@@ -14,6 +14,9 @@
             <li class="nav-item">
                 <a class="nav-link" routerLink="/posts">Posts</a>
               </li>
+              <li class="nav-item" *ngIf="role.authority === 'ROLE_ADMIN' || role.authority ==='ROLE_USER'">
+                <a class="nav-link" [routerLink]="['/add-edit']">Add Post <span class="sr-only">(current)</span></a>
+              </li>
             <li class="nav-item">
               <a class="nav-link" href="" (click)="logout()">Logout</a>
             </li>
@@ -31,7 +34,7 @@
                   </div>
                   <div class="col-md"></div>
                   <div class="col-md-6" *ngIf="display == true">
-                    <form name="userForm"   #f="ngForm">
+                    <form name="userForm"   #f="ngForm" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" id="name"  required [(ngModel)]="newUser.name" name="name" aria-describedby="emailHelp" placeholder="Enter name">
@@ -44,17 +47,23 @@
                               <label for="password">Password</label>
                               <input type="password" class="form-control" id="password" required [(ngModel)]="newUser.password" name="password" placeholder="Create password">
                             </div>
-                            <div class="form-group" *ngIf="editMode == true">
+                            <div class="form-group" *ngIf="editMode == true && logged.username === pageOwner.username">
                               <label for="password">Old Password</label>
                               <input type="password" class="form-control" id="password" required [(ngModel)]="passwordChanger.oldPassword" name="password" placeholder="Create password">
                             </div>
-                            <div class="form-group" *ngIf="editMode == true">
+                            <div class="form-group" *ngIf="editMode == true && logged.username === pageOwner.username">
                               <label for="password">New Password</label>
                               <input type="password" class="form-control" id="password" required [(ngModel)]="passwordChanger.newPassword" name="password" placeholder="Create password">
                             </div>
+                            <div class="form-check" *ngIf="role.authority === adminRole">
+                              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="adminSelected" [(ngModel)]="adminSelected">
+                              <label class="form-check-label" for="defaultCheck1">
+                                Admin
+                              </label>
+                            </div>
                             <div class="form-group">
                                 <label for="photo">Input your photo</label>
-                                <input type="file" class="form-control-file" id="photo"  name="photo">
+                                <input type="file" class="form-control-file" id="photo" type="file" name="photo" multiple="multiple"> 
                               </div>
                               <p class="alert alert-danger" role="alert" *ngIf="showMessage==true">Username already exist!</p>
                               <p class="alert alert-success" role="alert" *ngIf="success==true">Success!</p>
@@ -67,7 +76,7 @@
       <div class="col-md" style="margin: 4%;">
         <button type="submit"   (click)="openAdd()" class="btn btn-success" *ngIf="role.authority === adminRole">Add</button>
         <button type="submit" (click)="openEdit()" class="btn btn-warning" *ngIf="logged.username === pageOwner.username || role.authority === adminRole" style="margin-left: 5px;">Edit</button>
-        <button type="submit"  class="btn btn-danger" (click)="deleteUser()" *ngIf="role.authority === adminRole" style="margin-left: 5px;">Delete</button>
+        <button type="submit"  class="btn btn-danger" (click)="deleteUser()" *ngIf="role.authority === adminRole && logged.username != pageOwner.username" style="margin-left: 5px;">Delete</button>
       </div>
       
     </div>

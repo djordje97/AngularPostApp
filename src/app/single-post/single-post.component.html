@@ -9,6 +9,9 @@
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/users',logged.username]">My profile <span class="sr-only">(current)</span></a>
         </li>
+        <li class="nav-item" *ngIf="role.authority === 'ROLE_ADMIN' || role.authority ==='ROLE_USER'">
+          <a class="nav-link" [routerLink]="['/add-edit']">Add Post <span class="sr-only">(current)</span></a>
+        </li>
         <li class="nav-item">
             <a class="nav-link" routerLink="/posts">Posts</a>
           </li>
@@ -40,7 +43,10 @@
           <p>Posted on {{post.date |date: 'dd.MM.yyyy'}}</p>
 
           <hr>
+          
+          <p>{{showTags}}</p>
 
+          <hr>
           <!-- Preview Image -->
           <img class="img-fluid rounded" src="https://images.pexels.com/photos/912110/pexels-photo-912110.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="">
 
@@ -97,5 +103,12 @@
                           </div>
                       </div>
                   </div>
-              </div>
-</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md" style="margin: 4%;">
+          <button type="submit" (click)="editPost()" class="btn btn-warning"  style="margin-left: 5px;" *ngIf="logged.username === post.user.username || role.authority ==='ROLE_ADMIN'">Edit</button>
+          <button type="submit"  class="btn btn-danger" (click)="deletePost()"style="margin-left: 5px;" *ngIf="logged.username === post.user.username || role.authority ==='ROLE_ADMIN'">Delete</button>
+        </div>
+      </div>
+  </div>

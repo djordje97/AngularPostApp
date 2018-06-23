@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { User } from "../model/user.model";
 import { AuthService } from "../authservice";
+import {} from "jquery";
 
 
 const httpOptions= {
@@ -11,7 +12,8 @@ const httpOptions= {
 export class UserService{
 
     private url='/api/users';
-    constructor(private http: HttpClient){}
+    filesToUpload: Array<File>;
+    constructor(private http: HttpClient){ this.filesToUpload=[];}
 
      getUserByUsername(username: string): any{
         var token=localStorage.getItem("token");
@@ -202,26 +204,4 @@ export class UserService{
         return this.http.delete("api/users/"+id,{headers:httpOptions.header});
     }
 
-    postFile(fileToUpload: File){
-        var token=localStorage.getItem("token")
-        var head;
-        if(token){
-        head={
-            "Authorization": "Bearer " + token,
-            'Content-Type': 'application/json'
-          };
-        }else{
-            head={
-                'Content-Type': 'application/json'
-            };
-        }
-       let  httpOptions= {
-            header: new  HttpHeaders(head)
-        };
-        const endpoint = 'your-destination-url';
-        const formData: FormData = new FormData();
-        formData.append('fileKey', fileToUpload, fileToUpload.name);
-        return this.http
-          .post(endpoint, formData, { headers: httpOptions.header });
-    }
 }

@@ -14,6 +14,7 @@ import { User } from '../model/user.model';
 export class PostListComponent implements OnInit {
 
   logged:User;
+  role;
   
   posts:Post[];
   constructor(private router:Router,private postService:PostService,private userService:UserService) { }
@@ -28,6 +29,7 @@ export class PostListComponent implements OnInit {
           this.logged=data;
        this.userService.getRole(data.username).subscribe(result =>{
             console.log(result);
+            this.role=result;
           });
       });
     this.postService.getAllPosts()
