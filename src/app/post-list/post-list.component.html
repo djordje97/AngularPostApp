@@ -4,6 +4,10 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+      <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" name="text" [(ngModel)]="text" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" (click)="search()" type="submit">Search</button>
+        </form>
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="nav-link" href="">Hi {{logged.username}}</a>
@@ -19,9 +23,28 @@
       </li>
     </ul>
   </div>
+
 </nav>
 <div class="container-fluid">
-  <div class="row" style="margin-top: 3%;">
+
+  <div class="row">
+    <div class="col-md-3">
+        <div class="input-group" style="margin-left: 5%;margin-top: 10px;">
+            <label for="exampleFormControlSelect1">Order by:</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="orderBy" [(ngModel)]="orderBy">
+              <option value="date">Date</option>
+              <option value="likes">Likes</option>
+              <option value="dislikes">Dislikes</option>
+              <option>Comment number</option>
+            </select>
+            <button class="btn btn-primary" (click)="order()">Order</button>
+    </div>
+      
+  </div>
+ 
+</div>
+  </div>
+  <div class="row" style="margin-top: 3%; margin-left: 3%;">
       <div class="col-auto" *ngFor="let post of posts">
         <div class="card" style="width: 18rem;">
           <img class="card-img-top" src="https://images.pexels.com/photos/912110/pexels-photo-912110.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Card image cap">

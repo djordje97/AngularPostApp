@@ -209,4 +209,61 @@ export class PostService{
         };
         return this.http.get("/api/posts/tag/"+postId,{headers:httpOptions.header});
     }
+
+    getOrderedPost(orderBy:string):any{
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.get("/api/posts/order/"+orderBy,{headers:httpOptions.header});
+    }
+
+    getOrderedComment(orderBy:string,postId:number):any{
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.get("/api/comments/post/order/"+postId+"/"+orderBy,{headers:httpOptions.header});
+    }
+
+    getPostSearched(text:string):any{
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.get("/api/posts/search/"+text,{headers:httpOptions.header});
+    }
 }

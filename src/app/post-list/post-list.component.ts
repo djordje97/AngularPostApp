@@ -15,7 +15,8 @@ export class PostListComponent implements OnInit {
 
   logged:User;
   role;
-  
+  orderBy;
+  text;
   posts:Post[];
   constructor(private router:Router,private postService:PostService,private userService:UserService) { }
 
@@ -42,7 +43,19 @@ export class PostListComponent implements OnInit {
     localStorage.removeItem("token");
     this.router.navigate["/login"]
   }
+
+  order(){
+   
+    this.postService.getOrderedPost(this.orderBy).subscribe(data =>{
+      this.posts=data;
+    });
+  }
  
+  search(){
+    this.postService.getPostSearched(this.text).subscribe(data =>{
+      this.posts=data;
+    });
+  }
 
 
 }

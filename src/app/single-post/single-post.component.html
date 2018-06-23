@@ -76,34 +76,20 @@
             </div>
           </div>
 
-            <div class="row" *ngFor="let comment of comments" >
-              <div class="col-sm-8" style="margin: 3%;">
-                  <div class="panel panel-white post panel-shadow">
-                      <div class="post-heading">
-                          <div class="pull-left image">
-                              <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
-                          </div>
-                          <div class="pull-left meta">
-                              <div class="title h5">
-                                  <a href="#" [routerLink]="['/users',comment.user.username]"><b>{{comment.user.username}}</b></a>
-                                  made a comment.
-                              </div>
-                              <h6 class="text-muted time">{{comment.date |date: 'dd.MM.yyyy'}}</h6>
-                          </div>
-                      </div> 
-                      <div class="post-description"> 
-                          <p>{{comment.description}}</p>
-                          <div class="stats">
-                              <button name="{{comment.id}}" id="false" (click)="likeComment($event)" class="btn btn-primary">
-                                  <i class="fa fa-thumbs-up icon"></i>&nbsp;{{comment.likes}}
-                              </button>
-                              <button class="btn btn-danger" name="{{comment.id}}" (click)="dislikeComment($event)" id="false" style="margin-left: 4px;">
-                                  <i class="fa fa-thumbs-down icon"></i>&nbsp;{{comment.dislikes}}
-                              </button>
-                          </div>
-                      </div>
+          
+
+         
+            <div class="col-md-6">
+                <div class="input-group" style="margin-left: 5%;margin-top: 10px;">
+                    <label for="exampleFormControlSelect1">Order by:</label>
+                    <select class="form-control" id="exampleFormControlSelect1" name="orderBy" [(ngModel)]="orderBy">
+                      <option value="date">Date</option>
+                      <option value="likes">Likes</option>
+                      <option value="dislikes">Dislikes</option>
+                    </select>
+                    <button class="btn btn-primary" (click)="order()">Order</button>
                   </div>
-                </div>
+        
             </div>
         </div>
         <div class="col-md" style="margin: 4%;">
@@ -111,4 +97,37 @@
           <button type="submit"  class="btn btn-danger" (click)="deletePost()"style="margin-left: 5px;" *ngIf="logged.username === post.user.username || role.authority ==='ROLE_ADMIN'">Delete</button>
         </div>
       </div>
+      <div class="row" *ngFor="let comment of comments">
+          <div class="col-sm-5" style="margin: 3%;" >
+              <div class="panel panel-white post panel-shadow">
+                  <div class="post-heading">
+                      <div class="pull-left image">
+                          <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
+                      </div>
+                      <div class="pull-left meta">
+                          <div class="title h5">
+                              <a href="#" [routerLink]="['/users',comment.user.username]"><b>{{comment.user.username}}</b></a>
+                              made a comment.
+                          </div>
+                          <h6 class="text-muted time">{{comment.date |date: 'dd.MM.yyyy'}}</h6>
+                      </div>
+                  </div> 
+                  <div class="post-description"> 
+                      <p>{{comment.description}}</p>
+                      <div class="stats">
+                          <button name="{{comment.id}}" id="false" (click)="likeComment($event)" class="btn btn-primary">
+                              <i class="fa fa-thumbs-up icon"></i>&nbsp;{{comment.likes}}
+                          </button>
+                          <button class="btn btn-danger" name="{{comment.id}}" (click)="dislikeComment($event)" id="false" style="margin-left: 4px;">
+                              <i class="fa fa-thumbs-down icon"></i>&nbsp;{{comment.dislikes}}
+                          </button>
+                      </div>
+                  </div>
+              </div>
+            </div>
+        </div>  
+    
+         
+            
+        
   </div>

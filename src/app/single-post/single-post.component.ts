@@ -31,6 +31,7 @@ export class SinglePostComponent implements OnInit {
   role;
   tags:Tag[];
   showTags:string="";
+  orderBy;
 
   @ViewChild('f')form:NgForm;
   constructor(private router: Router,private route: ActivatedRoute,private postService: PostService,private userService:UserService) { }
@@ -77,7 +78,6 @@ export class SinglePostComponent implements OnInit {
   }
 
   likePost(){
-    alert(this.showTags);
     if(this.likedPost == false){
       if(this.dislikedPost == false){
         this.post.likes++;
@@ -240,6 +240,12 @@ export class SinglePostComponent implements OnInit {
           this.router.navigate(["/posts"]);
       });
     }
+  }
+
+  order(){
+    this.postService.getOrderedComment(this.orderBy,this.postId).subscribe(data =>{
+        this.comments=data;
+    });
   }
   
 }
