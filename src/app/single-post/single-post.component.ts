@@ -32,6 +32,7 @@ export class SinglePostComponent implements OnInit {
   tags:Tag[];
   showTags:string="";
   orderBy;
+  image
 
   @ViewChild('f')form:NgForm;
   constructor(private router: Router,private route: ActivatedRoute,private postService: PostService,private userService:UserService) { }
@@ -45,6 +46,7 @@ export class SinglePostComponent implements OnInit {
       this.postService.getPostById(this.postId)
       .subscribe(data =>{
           this.post=data;
+          this.image="data:image/gif;base64,"+this.post.photo;
       });
 
       this.postService.getCommentsByPost(this.postId)

@@ -3,7 +3,7 @@ export class User{
     public name: string;
     public username: string;
     public password: string;
-    public photo: Blob;
+    public photo: any;
 
     constructor(){
     
@@ -37,10 +37,10 @@ export class User{
         this.password=thepassword;
     }
 
-    get photoU():Blob{
+    get photoU():any{
         return this.photo;
     }
-    set photoU(thePhoto: Blob){
+    set photoU(thePhoto: any){
         this.photo=thePhoto;
     }
 }

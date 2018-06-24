@@ -13,7 +13,7 @@ export class UserService{
 
     private url='/api/users';
     filesToUpload: Array<File>;
-    constructor(private http: HttpClient){ this.filesToUpload=[];}
+    constructor(private http: HttpClient){ }
 
      getUserByUsername(username: string): any{
         var token=localStorage.getItem("token");
@@ -148,7 +148,7 @@ export class UserService{
         return this.http.get("api/users/get/role/"+username,{headers:httpOptions.header});
     }
 
-    updateUser(id:number,user:any){
+    updateUser(id:number,user:any):any{
         var token=localStorage.getItem("token")
         var head;
         if(token){

@@ -5,6 +5,8 @@ import { User } from '../model/user.model';
 import { NONAME } from 'dns';
 import { NgForm } from '@angular/forms';
 import {} from "jquery";
+import { ImageServiceService } from '../image-service.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-user',
@@ -17,7 +19,7 @@ export class UserComponent implements OnInit {
   logged;
   role;
   pageOwnerRole;
-  newUser;
+  newUser:User=new User();
   display=false;
   editMode=false;
   createMode=true;
@@ -27,11 +29,14 @@ export class UserComponent implements OnInit {
   adminRole="ROLE_ADMIN";
   editedUser;
   adminSelected=false;
+  image;
+  selectedFiles: FileList;
+  currentFileUpload: File;
   @ViewChild('f')form:NgForm;
   passwordChanger={
 
   };
-  constructor(private userService:UserService,private router:Router,private route:ActivatedRoute) { }
+  constructor(private userService:UserService,private router:Router,private route:ActivatedRoute,private imageService:ImageServiceService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params =>{
@@ -42,6 +47,7 @@ export class UserComponent implements OnInit {
     });
     this.userService.getUserByUsername(this.usernameParam).subscribe(data =>{
         this.pageOwner=data;
+        this.image="data:image/gif;base64,"+this.pageOwner.photo;
         this.userService.getRole(data.username).subscribe(result =>{
           console.log("pageOwner: "+result.authority);
           this.pageOwnerRole=result.authority;
@@ -61,13 +67,12 @@ export class UserComponent implements OnInit {
             });
         });
         
+     
 
   }
 
   openAdd(){
-    this.newUser={
 
-    };
     this.editMode=false
     this.createMode=true;
     this.display=true;
@@ -101,6 +106,16 @@ export class UserComponent implements OnInit {
     this.showMessage=false;
   }
 
+  selectFile(event) {
+    const file = event.target.files.item(0);
+ 
+    if (file.type.match('image.*')) {
+      this.selectedFiles = event.target.files;
+    } else {
+      alert('invalid format!');
+    }
+  }
+
   save(){
     if(this.createMode){
       if(this.usernames.find(x => x === this.newUser.username)){
@@ -108,6 +123,7 @@ export class UserComponent implements OnInit {
         return;
       }
         this.userService.addUser(this.newUser).subscribe(data =>{
+          console.log("username"+data.username);
           this.success=true;
           var sendRole="ROLE_USER";
           if(this.adminSelected == true){
@@ -122,10 +138,15 @@ export class UserComponent implements OnInit {
             }
           });
         });
+        this.imageService.pushFileToStorage(this.currentFileUpload,this.newUser.username).subscribe(res =>{
+
+        });
     }else{
       console.log(this.adminSelected);
       this.userService.updateUser(this.pageOwner.id,this.newUser).subscribe(data =>{
+        console.log("nakon update: "+data.username);   
         if(this.adminSelected == true){
+          
           this.userService.setRole(this.pageOwner.username,"ROLE_ADMIN").subscribe(result =>{
 
           });
@@ -147,8 +168,11 @@ export class UserComponent implements OnInit {
         this.pageOwner.username=this.editedUser.username; 
         this.display=false;
       });
+      this.imageService.pushFileToStorage(this.currentFileUpload,this.newUser.username).subscribe(res =>{
+
+      });
     }
-    location.reload();
+    
     
   }
   deleteUser(){

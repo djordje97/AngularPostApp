@@ -13,6 +13,7 @@ import { PostService } from './post-list/post.service';
 import { SinglePostComponent } from './single-post/single-post.component';
 import {MatDialogModule,MatCardModule,MatButtonModule} from '@angular/material';
 import { AddEditPostComponent } from './add-edit-post/add-edit-post.component';
+import { ImageServiceService } from './image-service.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { AddEditPostComponent } from './add-edit-post/add-edit-post.component';
     MatCardModule,
     MatButtonModule
   ],
-  providers: [UserService,PostService],
+  providers: [UserService,PostService,ImageServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

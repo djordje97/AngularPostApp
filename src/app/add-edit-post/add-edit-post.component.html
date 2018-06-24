@@ -38,7 +38,7 @@
             <button style="margin-left: 5px;" type="submit"  (click)="clearTag()" class="btn btn-primary" [hidden]="editMode">Clear input</button>
             <div class="form-group">
                 <label for="photo">Input your photo</label>
-                <input type="file" class="form-control-file" id="photo" type="file" name="photo" multiple="multiple"> 
+                <input type="file" (change)="selectFile($event)" class="form-control-file" id="photo" name="photo"> 
               </div>
               <p class="alert alert-success" role="alert" *ngIf="success==true">Success!</p>
             <button type="submit"   (click)="save()" class="btn btn-success" [disabled]="!f.valid">Submit</button>

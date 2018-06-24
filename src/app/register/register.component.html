@@ -30,7 +30,7 @@
                       </div>
                       <div class="form-group">
                           <label for="photo">Input your photo</label>
-                          <input type="file" class="form-control-file" id="photo"[(ngModel)]="newUser.photoU" name="photo">
+                          <input type="file" class="form-control-file" id="photo" name="photo"  (change)="selectFile($event)">
                         </div>
                         <p class="alert alert-danger" role="alert" *ngIf="showMessage==true">Username already exist!</p>
                         <p class="alert alert-success" role="alert" *ngIf="success==true">Registered successiful.You can log in now.</p>

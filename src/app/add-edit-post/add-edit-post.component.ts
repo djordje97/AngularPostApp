@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Post } from '../model/post.model';
 import { Tag } from '../model/tag.model';
 import { NgForm } from '@angular/forms';
+import { ImageServiceService } from '../image-service.service';
 
 @Component({
   selector: 'app-add-edit-post',
@@ -22,8 +23,10 @@ export class AddEditPostComponent implements OnInit {
   allTags:any[]=[];
   listForAdd:any[]=[];
   success=false;
+  selectedFiles: FileList;
+  currentFileUpload: File;
   @ViewChild('f')form:NgForm;
-  constructor(private userService:UserService,private postService:PostService,private router:Router,private activeRoute:ActivatedRoute) { }
+  constructor(private userService:UserService,private postService:PostService,private router:Router,private activeRoute:ActivatedRoute,private imageService:ImageServiceService) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(params =>{
@@ -54,9 +57,22 @@ export class AddEditPostComponent implements OnInit {
         });
   }
 
+  selectFile(event) {
+    const file = event.target.files.item(0);
+ 
+    if (file.type.match('image.*')) {
+      this.selectedFiles = event.target.files;
+    } else {
+      alert('invalid format!');
+    }
+  }
+
   save(){
     if(this.editMode){
       this.postService.updatePost(this.postId,this.newPost).subscribe(data =>{
+        this.imageService.addPostPhoto(this.currentFileUpload,data.id).subscribe(res =>{
+
+        });
         this.router.navigate(["/posts"]);
       });
     }else{
@@ -66,6 +82,9 @@ export class AddEditPostComponent implements OnInit {
      this.newPost.latitude=0;
      this.newPost.user=this.logged;
      this.postService.addPost(this.newPost).subscribe(data =>{
+      this.imageService.addPostPhoto(this.currentFileUpload,data.id).subscribe(res =>{
+
+      });
     this.listForAdd.forEach(tagForAdd => {
       this.postService.addTag(tagForAdd).subscribe(x =>{
         this.allTags.forEach(element => {
