@@ -82,6 +82,7 @@ export class AddEditPostComponent implements OnInit {
      this.newPost.latitude=0;
      this.newPost.user=this.logged;
      this.postService.addPost(this.newPost).subscribe(data =>{
+       console.log("post id: "+data.id);
       this.imageService.addPostPhoto(this.currentFileUpload,data.id).subscribe(res =>{
 
       });

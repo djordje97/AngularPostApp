@@ -27,12 +27,14 @@ export class SinglePostComponent implements OnInit {
   dislikedComment: boolean;
   commentId: number;
   newComment:Comment=new Comment();
-  logged:User;
-  role;
+  logged:User=new User();
+  role="";
   tags:Tag[];
   showTags:string="";
   orderBy;
-  image
+  image;
+  isLogged=false;
+  isEditComment=false;
 
   @ViewChild('f')form:NgForm;
   constructor(private router: Router,private route: ActivatedRoute,private postService: PostService,private userService:UserService) { }
@@ -56,15 +58,19 @@ export class SinglePostComponent implements OnInit {
 
       var token=localStorage.getItem("token");
       console.log("Token u init "+token)
-      this.userService.getLogged(token).subscribe(
-        data =>{
-          console.log(data);
-            this.logged=data;
-         this.userService.getRole(data.username).subscribe(result =>{
-              console.log(result);
-              this.role=result;
-            });
-        });
+      if(token!=null){
+        this.isLogged=true;
+        this.userService.getLogged(token).subscribe(
+          data =>{
+            console.log(data);
+              this.logged=data;
+           this.userService.getRole(data.username).subscribe(result =>{
+                console.log(result);
+                this.role=result;
+              });
+          });
+      }
+  
 
         this.postService.getTagsByPost(this.postId).subscribe(data =>{
           console.log(data);
@@ -80,6 +86,9 @@ export class SinglePostComponent implements OnInit {
   }
 
   likePost(){
+    if(this.isLogged == false){
+      return;
+    }
     if(this.likedPost == false){
       if(this.dislikedPost == false){
         this.post.likes++;
@@ -103,6 +112,9 @@ export class SinglePostComponent implements OnInit {
   }
 
   dislikePost(){
+    if(this.isLogged == false){
+      return;
+    }
     if(this.dislikedPost == false){
       if(this.likedPost == false){
         this.post.dislike++;
@@ -124,6 +136,9 @@ export class SinglePostComponent implements OnInit {
   }
 
   likeComment(event){
+    if(this.isLogged == false){
+      return;
+    }
     var target=event.target;
     var attr=target.attributes.name;
     console.log(attr.nodeValue);
@@ -167,6 +182,9 @@ export class SinglePostComponent implements OnInit {
   }
   
   dislikeComment(event){
+    if(this.isLogged == false){
+      return;
+    }
     var target=event.target;
     var attr=target.attributes.name;
     console.log(attr.nodeValue);
@@ -214,17 +232,30 @@ export class SinglePostComponent implements OnInit {
   }
   createComment(){
 
-    this.newComment.userC=this.logged;
-    this.newComment.postC=this.post;
-    this.newComment.likesC=0;
-    this.newComment.dislikesC=0;
-    console.log(this.newComment);
-    this.postService.createComment(this.newComment).subscribe(data =>{
-      this.comments.push(data);
-      
-      console.log(data);
-      this.form.reset();
-    });
+    if(this.isLogged == false){
+      return;
+    }
+    if(this.isEditComment == true){
+      this.postService.editComment(this.newComment).subscribe(data =>{
+        this.postService.getCommentsByPost(this.postId).subscribe(res =>{
+          this.comments=res;
+          this.form.reset();
+        });
+      });
+    }else{
+      this.newComment.user=this.logged;
+      this.newComment.post=this.post;
+      this.newComment.likesC=0;
+      this.newComment.dislikesC=0;
+      console.log(this.newComment);
+      this.postService.createComment(this.newComment).subscribe(data =>{
+        this.comments.push(data);
+        
+        console.log(data);
+        this.form.reset();
+      });
+    }
+ 
   }
 
   editPost(){
@@ -249,5 +280,34 @@ export class SinglePostComponent implements OnInit {
         this.comments=data;
     });
   }
+
+  deleteComment(event){
+    var target=event.target;
+    var attr=target.attributes.name;
+    console.log(attr.nodeValue);
+    let idValue: string=attr.nodeValue;
+    this.commentId=Number.parseInt(idValue);
+    var x=confirm("Are you shure?");
+    if(x){
+      this.postService.deleteComment(this.commentId).subscribe(res =>{
+        this.postService.getCommentsByPost(this.postId).subscribe(data =>{
+          this.comments=data
+        });
+      });
+    }
+
+  }
   
+  editComment(event){
+    var target=event.target;
+    var attr=target.attributes.name;
+    console.log(attr.nodeValue);
+    let idValue: string=attr.nodeValue;
+    this.commentId=Number.parseInt(idValue);
+    let comment=this.comments.find(x => x.id == this.commentId);
+    console.log(comment);
+    this.newComment=comment;
+    console.log(this.newComment);
+    this.isEditComment=true;
+  }
 }

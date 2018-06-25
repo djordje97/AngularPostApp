@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/users',logged.username]">My profile <span class="sr-only">(current)</span></a>
+          <a class="nav-link" [routerLink]="['/users',logged.username]" *ngIf="isLogged == true">My profile <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item" *ngIf="role.authority === 'ROLE_ADMIN' || role.authority ==='ROLE_USER'">
           <a class="nav-link" [routerLink]="['/add-edit']">Add Post <span class="sr-only">(current)</span></a>
@@ -15,8 +15,14 @@
         <li class="nav-item">
             <a class="nav-link" routerLink="/posts">Posts</a>
           </li>
+          <li class="nav-item" *ngIf="isLogged == false">
+            <a class="nav-link" href=""  [routerLink]="['/login']"  *ngIf="isLogged == false">Login</a>
+          </li>
+          <li class="nav-item" *ngIf="isLogged == false">
+            <a class="nav-link" href=""  [routerLink]="['/register']"  *ngIf="isLogged == false">Register</a>
+          </li>
         <li class="nav-item">
-          <a class="nav-link" href="" (click)="logout()">Logout</a>
+          <a class="nav-link" href="" (click)="logout()" *ngIf="isLogged == true">Logout</a>
         </li>
       </ul>
     </div>
@@ -65,11 +71,11 @@
               <form name="commentForm"   #f="ngForm"> 
                   <div class="form-group">
                     <p>Comment title:</p>
-                      <input type="text" id="title" name="title" [(ngModel)]="newComment.titleC" class="form-control" required>
+                      <input type="text" id="title" name="title" [(ngModel)]="newComment.title" class="form-control" required>
                     </div>
                 <div class="form-group">
                     <p>Comment description:</p>
-                  <textarea class="form-control"  id="description" name="description" required [(ngModel)]="newComment.descriptionC" rows="3"></textarea>
+                  <textarea class="form-control"  id="description" name="description" required [(ngModel)]="newComment.description" rows="3"></textarea>
                 </div>
                 <button type="submit" [disabled]="!f.valid" (click)="createComment()" class="btn btn-primary">Submit</button>
               </form>
@@ -121,6 +127,8 @@
                           <button class="btn btn-danger" name="{{comment.id}}" (click)="dislikeComment($event)" id="false" style="margin-left: 4px;">
                               <i class="fa fa-thumbs-down icon"></i>&nbsp;{{comment.dislikes}}
                           </button>
+                          <button type="submit"  class="btn btn-danger float-right"  *ngIf="role.authority === 'ROLE_ADMIN'" name="{{comment.id}}" (click)="deleteComment($event)"style="margin-left: 5px;">Delete</button>
+                          <button type="submit" (click)="editComment($event)" *ngIf="role.authority === 'ROLE_ADMIN'" name="{{comment.id}}" class="btn btn-warning float-right"  style="margin-left: 5px;" >Edit</button>
                       </div>
                   </div>
               </div>

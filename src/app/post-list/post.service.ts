@@ -266,4 +266,42 @@ export class PostService{
         };
         return this.http.get("/api/posts/search/"+text,{headers:httpOptions.header});
     }
+
+    deleteComment(commentId:number){
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.delete('/api/comments/'+commentId,{headers:httpOptions.header});
+    }
+
+    editComment(comment:Comment){
+        var token=localStorage.getItem("token")
+        var head;
+        if(token){
+        head={
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+          };
+        }else{
+            head={
+                'Content-Type': 'application/json'
+            };
+        }
+       let  httpOptions= {
+            header: new  HttpHeaders(head)
+        };
+        return this.http.put('/api/comments/'+comment.id,comment,{headers:httpOptions.header});
+    }
 }

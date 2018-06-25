@@ -13,17 +13,20 @@ import { User } from '../model/user.model';
 })
 export class PostListComponent implements OnInit {
 
-  logged:User;
-  role;
+  logged:User=new User();
+  role="";
   orderBy;
   text;
   posts:Post[];
+  isLogged=false;
   constructor(private router:Router,private postService:PostService,private userService:UserService) { }
 
 
   ngOnInit() {
     var token=localStorage.getItem("token");
-    console.log("Token u init "+token)
+    if(token!= null){
+      this.isLogged=true;
+      console.log("Token u init "+token);
     this.userService.getLogged(token).subscribe(
       data =>{
         console.log(data);
@@ -33,8 +36,10 @@ export class PostListComponent implements OnInit {
             this.role=result;
           });
       });
+    }
     this.postService.getAllPosts()
     .subscribe(data =>{
+      console.log(data)
       this.posts=data;
     });
   };

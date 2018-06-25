@@ -20,7 +20,7 @@ export class ImageServiceService {
     var head;
     if(token){
     head={
-        "Authorization": "Bearer " + token
+        "Authorization": "Bearer " + token,
       };
     }
    let  httpOptions= {
@@ -29,11 +29,10 @@ export class ImageServiceService {
     return this.http.post("api/users/image",formdata,{headers: httpOptions.header});
   }
 
-  addPostPhoto(file: File,id:any): any {
+  addPostPhoto(file: File,postId:number): any {
     const formdata: FormData = new FormData();
  
     formdata.append('file', file);
-    formdata.append('id',id);
  
     var token=localStorage.getItem("token");
     console.log("Iz imageService: "+token);
@@ -46,6 +45,6 @@ export class ImageServiceService {
    let  httpOptions= {
         header: new  HttpHeaders(head)
     };
-    return this.http.post("api/posts/image",formdata,{headers: httpOptions.header});
+    return this.http.put("api/posts/image/"+postId,formdata,{headers: httpOptions.header});
   }
 }

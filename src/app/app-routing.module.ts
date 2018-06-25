@@ -8,7 +8,7 @@ import { UserComponent } from "./user/user.component";
 import { AddEditPostComponent } from "./add-edit-post/add-edit-post.component";
 
 const appRoutes: Routes=[
-    {path: '', redirectTo: '/login' ,pathMatch: 'full'},
+    {path: '', redirectTo: '/posts' ,pathMatch: 'full'},
     {path: 'login' ,component: LoginComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'posts', component: PostListComponent},
